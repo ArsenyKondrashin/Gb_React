@@ -5,8 +5,8 @@ import { changeName, toggleProfile } from "../store/profile/actions";
 
 
 export const Profile = () => {
-    const visible = useSelector((state) => state.visible)
-    const name = useSelector((state) => state.name)
+    const visible = useSelector((state) => state.profile.visible)
+    const name = useSelector((state) => state.profile.name)
     const [value, setValue] = useState('');
     const newName = (e) => {
         setValue(e.target.value);

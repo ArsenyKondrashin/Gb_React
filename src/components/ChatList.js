@@ -1,20 +1,24 @@
 import { Button, ListItem, TextField } from "@mui/material";
 import { Box } from "@mui/system";
 import { useState } from "react";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { store } from "../store";
+import { addChat, deleteChat } from "../store/chats/actions";
 
-export const ChatList = ({ chats, AddChat }) => {
+export const ChatList = () => {
+    const chats = useSelector((state) => Object.keys(state.chats).map((chat) => ({
+        name: chat,
+    })));
+    const chats2 = useSelector((state) => state.chats);
     const [value, setValue] = useState('')
-
     const newChat = (e) => {
-        e.preventDefault();
 
         if (value) {
-            AddChat({
-                id: 1,
-                name: value,
-            });
+            store.dispatch(addChat(value))
         }
+        console.log(chats2);
+        console.log(chats);
         setValue('');
     }
     const change = (e) => {
@@ -23,7 +27,7 @@ export const ChatList = ({ chats, AddChat }) => {
 
     return (
         <>
-            <form action="#" class="form" onSubmit={newChat}>
+            <form action="#" className="form" onSubmit={newChat}>
                 <Box
                     component="form"
                     sx={{
@@ -40,10 +44,9 @@ export const ChatList = ({ chats, AddChat }) => {
                 {chats.map((value) => (
                     <ListItem
                         key={value.name}
-                        disableGutters
-
-                    >
+                        disableGutters>
                         <Link to={`/chats/${value.name}`}>{`${value.name}`}</Link>
+                        <button onClick={() => { store.dispatch(deleteChat(value.name)) }}>X</button>
                     </ListItem>
                 ))}
             </ul>
